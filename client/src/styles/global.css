@@ -1,1 +1,144 @@
 @import "tailwindcss";
+
+/* Theme Variables */
+:root {
+  --theme-transition: all 0.3s ease-in-out;
+}
+
+/* Dark Theme (default) */
+.dark {
+  --bg-primary: #0f172a;
+  --bg-secondary: #1e293b;
+  --bg-card: #334155;
+  --text-primary: #ffffff;
+  --text-secondary: #cbd5e1;
+  --border-color: #475569;
+  --accent-primary: #3b82f6;
+  --accent-secondary: #1d4ed8;
+}
+
+/* Light Blue Theme */
+.light-blue {
+  --bg-primary: #eff6ff;
+  --bg-secondary: #dbeafe;
+  --bg-card: #bfdbfe;
+  --text-primary: #1e3a8a;
+  --text-secondary: #1e40af;
+  --border-color: #93c5fd;
+  --accent-primary: #2563eb;
+  --accent-secondary: #1d4ed8;
+}
+
+/* Light Blue theme overrides using CSS custom properties */
+.light-blue .bg-slate-900 {
+  background-color: #eff6ff !important;
+}
+
+.light-blue .text-white {
+  color: #1e3a8a !important;
+}
+
+.light-blue .text-slate-100 {
+  color: #1e3a8a !important;
+}
+
+.light-blue .text-slate-300 {
+  color: #1e40af !important;
+}
+
+.light-blue .text-slate-400 {
+  color: #1d4ed8 !important;
+}
+
+.light-blue .text-slate-200 {
+  color: #1e40af !important;
+}
+
+.light-blue .bg-slate-800\/60,
+.light-blue .bg-slate-800\/70 {
+  background-color: rgba(191, 219, 254, 0.8) !important;
+}
+
+.light-blue .bg-slate-700\/50 {
+  background-color: rgba(147, 197, 253, 0.5) !important;
+}
+
+.light-blue .border-slate-700,
+.light-blue .border-slate-700\/50 {
+  border-color: #93c5fd !important;
+}
+
+.light-blue .border-slate-600 {
+  border-color: #60a5fa !important;
+}
+
+.light-blue .bg-slate-800 {
+  background-color: #ffffff !important;
+}
+
+.light-blue .bg-blue-700 {
+  background-color: #2563eb !important;
+}
+
+/* Header menu overrides for light blue theme */
+.light-blue .menu-dropdown {
+  background-color: #dbeafe !important;
+  color: #1e3a8a !important;
+}
+
+.light-blue .menu-item:hover {
+  background-color: #bfdbfe !important;
+}
+
+/* Form elements in light blue theme */
+.light-blue select,
+.light-blue input[type="checkbox"] {
+  background-color: #ffffff !important;
+  border-color: #60a5fa !important;
+  color: #1e3a8a !important;
+}
+
+/* Status badges in light blue theme */
+.light-blue .bg-green-500\/20 {
+  background-color: rgba(34, 197, 94, 0.2) !important;
+}
+
+.light-blue .text-green-400 {
+  color: #16a34a !important;
+}
+
+.light-blue .bg-amber-500\/20 {
+  background-color: rgba(245, 158, 11, 0.2) !important;
+}
+
+.light-blue .text-amber-400 {
+  color: #d97706 !important;
+}
+
+.light-blue .bg-red-500\/20 {
+  background-color: rgba(239, 68, 68, 0.2) !important;
+}
+
+.light-blue .text-red-400 {
+  color: #dc2626 !important;
+}
+
+/* Error states in light blue theme */
+.light-blue .text-red-400 {
+  color: #dc2626 !important;
+}
+
+/* Loading states in light blue theme */
+.light-blue .bg-slate-700 {
+  background-color: #93c5fd !important;
+}
+
+/* Button states in light blue theme */
+.light-blue .bg-blue-600 {
+  background-color: #2563eb !important;
+}
+
+.light-blue .bg-blue-600:hover,
+.light-blue .hover\:bg-blue-700:hover {
+  background-color: #1d4ed8 !important;
+}

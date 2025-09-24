@@ -5,18 +5,40 @@
         id: number;
         name: string;
         breed: string;
+        status?: string;
+    }
+
+    interface Breed {
+        id: number;
+        name: string;
     }
 
     export let dogs: Dog[] = [];
     let loading = true;
     let error: string | null = null;
+    let breeds: Breed[] = [];
+    let selectedBreed = '';
+    let showOnlyAvailable = false;
+    let allDogs: Dog[] = [];
 
-    const fetchDogs = async () => {
+    const fetchBreeds = async (): Promise<void> => {
+        try {
+            const response = await fetch('/api/breeds');
+            if (response.ok) {
+                breeds = await response.json();
+            }
+        } catch (err) {
+            console.error('Error fetching breeds:', err);
+        }
+    };
+
+    const fetchDogs = async (): Promise<void> => {
         loading = true;
         try {
             const response = await fetch('/api/dogs');
             if(response.ok) {
-                dogs = await response.json();
+                allDogs = await response.json();
+                filterDogs();
             } else {
                 error = `Failed to fetch data: ${response.status} ${response.statusText}`;
             }
@@ -27,14 +49,64 @@
         }
     };
 
+    const filterDogs = (): void => {
+        let filtered = [...allDogs];
+
+        if (selectedBreed) {
+            filtered = filtered.filter(dog => dog.breed === selectedBreed);
+        }
+
+        if (showOnlyAvailable) {
+            filtered = filtered.filter(dog => dog.status === 'AVAILABLE');
+        }
+
+        dogs = filtered;
+    };
+
+    // Reactive statements to filter dogs when filters change
+    $: if (selectedBreed !== undefined || showOnlyAvailable !== undefined) {
+        filterDogs();
+    }
+
     onMount(() => {
         fetchDogs();
+        fetchBreeds();
     });
 </script>
 
 <div>
     <h2 class="text-2xl font-medium mb-6 text-slate-100">Available Dogs</h2>
     
+    <!-- Filters -->
+    <div class="mb-6 flex flex-col sm:flex-row gap-4">
+        <!-- Breed filter -->
+        <div class="flex-1">
+            <label for="breed-filter" class="block text-sm font-medium text-slate-300 mb-2">Filter by breed:</label>
+            <select 
+                id="breed-filter"
+                bind:value={selectedBreed}
+                class="w-full bg-slate-800 border border-slate-600 text-slate-100 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            >
+                <option value="">All breeds</option>
+                {#each breeds as breed}
+                    <option value={breed.name}>{breed.name}</option>
+                {/each}
+            </select>
+        </div>
+
+        <!-- Availability filter -->
+        <div class="flex items-center">
+            <label class="flex items-center space-x-2 text-slate-300 cursor-pointer">
+                <input 
+                    type="checkbox" 
+                    bind:checked={showOnlyAvailable}
+                    class="w-4 h-4 text-blue-600 bg-slate-800 border-slate-600 rounded focus:ring-blue-500 focus:ring-2"
+                />
+                <span class="text-sm font-medium">Show only available dogs</span>
+            </label>
+        </div>
+    </div>
+
     {#if loading}
         <!-- loading animation -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -58,7 +130,13 @@
     {:else if dogs.length === 0}
         <!-- no dogs found -->
         <div class="text-center py-12 bg-slate-800/50 backdrop-blur-sm rounded-xl border border-slate-700">
-            <p class="text-slate-300">No dogs available at the moment.</p>
+            <p class="text-slate-300">
+                {#if selectedBreed || showOnlyAvailable}
+                    No dogs match the selected filters.
+                {:else}
+                    No dogs available at the moment.
+                {/if}
+            </p>
         </div>
     {:else}
         <!-- dog list -->

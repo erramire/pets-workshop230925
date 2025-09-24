@@ -1,7 +1,8 @@
 import { defineMiddleware } from "astro:middleware";
 
 // Get server URL from environment variable with fallback for local development
-const API_SERVER_URL = process.env.API_SERVER_URL || 'http://localhost:5100';
+// Force IPv4 to avoid Windows IPv6/IPv4 resolution issues
+const API_SERVER_URL = process.env.API_SERVER_URL || 'http://127.0.0.1:5100';
 
 // Middleware to handle API requests
 export const onRequest = defineMiddleware(async (context, next) => {

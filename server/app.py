@@ -1,6 +1,7 @@
 import os
 from typing import Dict, List, Any, Optional
 from flask import Flask, jsonify, Response
+from flask_cors import CORS
 from models import init_db, db, Dog, Breed
 
 # Get the server directory path
@@ -10,6 +11,9 @@ app: Flask = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{os.path.join(base_dir, "dogshelter.db")}'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
+# Enable CORS for all domains
+CORS(app)
+
 # Initialize the database with the app
 init_db(app)
 
@@ -18,7 +22,8 @@ def get_dogs() -> Response:
     query = db.session.query(
         Dog.id, 
         Dog.name, 
-        Breed.name.label('breed')
+        Breed.name.label('breed'),
+        Dog.status
     ).join(Breed, Dog.breed_id == Breed.id)
     
     dogs_query = query.all()
@@ -28,7 +33,8 @@ def get_dogs() -> Response:
         {
             'id': dog.id,
             'name': dog.name,
-            'breed': dog.breed
+            'breed': dog.breed,
+            'status': dog.status.name
         }
         for dog in dogs_query
     ]
@@ -65,7 +71,22 @@ def get_dog(id: int) -> tuple[Response, int] | Response:
     
     return jsonify(dog)
 
-## HERE
+@app.route('/api/breeds', methods=['GET'])
+def get_breeds() -> Response:
+    # Query all breeds
+    breeds_query = Breed.query.all()
+    
+    # Convert the result to a list of dictionaries
+    breeds_list: List[Dict[str, Any]] = [
+        {
+            'id': breed.id,
+            'name': breed.name
+        }
+        for breed in breeds_query
+    ]
+    
+    return jsonify(breeds_list)
+
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5100) # Port 5100 to avoid macOS conflicts
+    app.run(debug=True, host='0.0.0.0', port=5100) # Port 5100 to avoid macOS conflicts

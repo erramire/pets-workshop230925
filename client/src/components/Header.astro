@@ -1,5 +1,5 @@
 ---
-// Import any necessary dependencies
+import ThemeSwitcher from './ThemeSwitcher.svelte';
 ---
 
 <header class="bg-blue-500 dark:bg-blue-700 text-white p-4 shadow-md transition-colors duration-300">
@@ -11,14 +11,17 @@
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
           </svg>
         </button>
-        <nav id="menu" class="hidden absolute left-0 mt-2 w-48 bg-white dark:bg-slate-800 text-slate-800 dark:text-white rounded shadow-lg z-10 transition-colors duration-300">
+        <nav id="menu" class="menu-dropdown hidden absolute left-0 mt-2 w-48 bg-white dark:bg-slate-800 text-slate-800 dark:text-white rounded shadow-lg z-10 transition-colors duration-300">
           <ul class="py-1">
-            <li><a href="/" class="block px-4 py-2 hover:bg-slate-100 dark:hover:bg-slate-700">Home</a></li>
-            <li><a href="/about" class="block px-4 py-2 hover:bg-slate-100 dark:hover:bg-slate-700">About</a></li>
+            <li><a href="/" class="menu-item block px-4 py-2 hover:bg-slate-100 dark:hover:bg-slate-700">Home</a></li>
+            <li><a href="/about" class="menu-item block px-4 py-2 hover:bg-slate-100 dark:hover:bg-slate-700">About</a></li>
           </ul>
         </nav>
       </div>
       <h1 class="text-xl font-bold"><a href="/" class="hover:underline">Tailspin Shelter</a></h1>
+    </div>
+    <div class="flex items-center">
+      <ThemeSwitcher client:load />
     </div>
   </div>
 </header>
